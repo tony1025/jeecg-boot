@@ -115,6 +115,7 @@ public class ShiroConfig {
 
         //积木报表排除
         filterChainDefinitionMap.put("/jmreport/**", "anon");
+        filterChainDefinitionMap.put("/design/report/**", "anon");
         filterChainDefinitionMap.put("/**/*.js.map", "anon");
         filterChainDefinitionMap.put("/**/*.css.map", "anon");
 

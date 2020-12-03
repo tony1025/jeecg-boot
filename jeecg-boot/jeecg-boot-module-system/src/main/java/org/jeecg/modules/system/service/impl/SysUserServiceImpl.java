@@ -98,6 +98,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @CacheEvict(value={CacheConstant.SYS_USERS_CACHE}, allEntries=true)
 	@Transactional(rollbackFor = Exception.class)
 	public boolean deleteUser(String userId) {
+		if (this.getById(userId).getUsername().equals("admin"))
+			return false;
 		//1.删除用户
 		this.removeById(userId);
 		return false;
@@ -107,8 +109,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @CacheEvict(value={CacheConstant.SYS_USERS_CACHE}, allEntries=true)
 	@Transactional(rollbackFor = Exception.class)
 	public boolean deleteBatchUsers(String userIds) {
+		String[] userIdList = userIds.split(",");
+		for (int i=0;i<userIdList.length;i++){
+			if (this.getById(userIdList[i]).getUsername().equals("admin"))
+				userIdList[i] = null;
+		}
 		//1.删除用户
-		this.removeByIds(Arrays.asList(userIds.split(",")));
+		this.removeByIds(Arrays.asList(userIdList));
 		return false;
 	}
 
